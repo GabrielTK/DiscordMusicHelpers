@@ -1,0 +1,27 @@
+{
+  "name": "discord-helpers",
+  "version": "1.0.0",
+  "description": "Common helper classes for discord bots, including various api integrations and wrappers",
+  "main": "\"exit 0;\"",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mindaugaskasp/discord-helpers.git"
+  },
+  "keywords": [
+    "wrappers",
+    "integrations",
+    "youtube",
+    "api",
+    "listen-moe",
+    "radio-player"
+  ],
+  "author": "Mindaugas Kasparavičius",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mindaugaskasp/discord-helpers/issues"
+  },
+  "homepage": "https://github.com/mindaugaskasp/discord-helpers#readme"
+}
