@@ -2,7 +2,7 @@ const axios = require('axios');
 const Socket = require('./socket');
 
 axios.defaults.baseURL = 'https://listen.moe/api/';
-axios.defaults.headers.common['User-Agent'] = 'Music-Bot (v' + require('../../../package.json').version;
+axios.defaults.headers.common['User-Agent'] = 'Music-Bot (v' + require('../../package.json').version;
 
 class ListenMo {
     constructor(username, password) {
