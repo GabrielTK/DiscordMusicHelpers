@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "promised-io": "^0.3.5",
-    "superagent": "^3.5.2",
+    "superagent": "^3.5.2"
   },
   "homepage": "https://github.com/mindaugaskasp/discord-helpers#readme"
 }
