@@ -66,11 +66,17 @@ module.exports = class YoutubePlayer extends BasePlayer
             this.emit('playing', track, guild);
         });
 
-        dispatcher.on('end', (reason) => {
+        connection.dispatcher.on('end', (reason) => {
+            console.log(reason);
             if (state.stop === false) {
+                
                 this._TryToIncrementQueue(guild.id);
+                
                 return this.play(guild);
             } else {
+                connection.dispatcher.destroy().then(()=>{
+                    connection.disconnect();
+                });
                 state.stop = false;
                 this._state.set(guild.id, state);
             }
@@ -130,8 +136,22 @@ module.exports = class YoutubePlayer extends BasePlayer
     {
         let state = this._state.get(guild.id);
         let connection = guild.voiceConnection;
+        
         if (state && connection && (connection.dispatcher || connection.speaking === true)) {
+            state.stop = false;
+            var queue = this._queue.get(guild.id);
+            if(queue.queue_end_reached) {
+                
+                state.stop= true;
+            
+            }
+            this._state.set(guild.id, state);
             connection.dispatcher.end('skip() method initiated');
+            
+            
+            
+            //return this.play(guild);
+            
             return this.emit('skip', 'Music player is skipping.', guild)
         } else this.emit('skip', 'Music Player could not skip track at the moment. Player not connected or is not playing anything yet.', guild)
     }
