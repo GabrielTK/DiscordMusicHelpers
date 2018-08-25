@@ -1,7 +1,6 @@
 const BasePlayer = require('./base-player');
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
-
 module.exports = class YoutubePlayer extends BasePlayer
 {
     constructor(youtube)
@@ -45,19 +44,25 @@ module.exports = class YoutubePlayer extends BasePlayer
         if (!connection) return this.emit('play', 'Not connected to voice channel for given guild.', guild);
 
         if (connection.dispatcher && connection.dispatcher.paused) return this.emit('play', 'Music played is paused. Please resume playback or stop it before trying to play it.', guild);
-        else if (connection.dispatcher) connection.dispatcher.destroy('play', 'New dispatcher initialized');
+        //else if (connection.dispatcher) await connection.dispatcher.destroy('play', 'New dispatcher initialized');
 
         if (queue.queue_end_reached === true && state.loop === true) {
             if (state.shuffle === true) this.shuffle(guild);
             this._resetQueuePosition(guild.id);
             queue = this._queue.get(guild.id);
-        } else if (queue.queue_end_reached === true && state.loop === false) return this.emit('play', 'Music has finished playing for given guild. Looping is not enabled.', guild);
+        } else if (queue.queue_end_reached === true && state.loop === false){
+             var a = this._queue.get(guild.id);
+             a.position = 0;
+             a.tracks = [];
+             this._queue.set(guild.id, a);
+             return this.emit('play', 'Music has finished playing for given guild. Looping is not enabled.', guild);
+        }
 
         let track = this._getTrack(queue);
         //if (!state.seek) await this._youtube.download(track.url, `${YoutubePlayer.DOWNLOAD_DIR()}/${guild.id}`);
+        //let dispatcher = connection.playFile(`${YoutubePlayer.DOWNLOAD_DIR()}/${guild.id}`, {seek: state.seek, volume: state.volume, passes: 2});
         const stream = ytdl(track.url, { filter : 'audioonly' });
         let dispatcher = connection.playStream(stream, {seek: state.seek, volume: state.volume, passes: 2});
-        //let dispatcher = connection.playFile(`${YoutubePlayer.DOWNLOAD_DIR()}/${guild.id}`, {seek: state.seek, volume: state.volume, passes: 2});
 
         dispatcher.on('start', () => {
             state.seek = 0;
@@ -66,20 +71,19 @@ module.exports = class YoutubePlayer extends BasePlayer
             this.emit('playing', track, guild);
         });
 
-        connection.dispatcher.on('end', (reason) => {
+        dispatcher.on('end', (reason) => {
             console.log(reason);
+            
             if (state.stop === false) {
                 
                 this._TryToIncrementQueue(guild.id);
                 
                 return this.play(guild);
             } else {
-                connection.dispatcher.destroy().then(()=>{
-                    connection.disconnect();
-                });
                 state.stop = false;
                 this._state.set(guild.id, state);
             }
+            
         });
 
         dispatcher.on('error', e => {
@@ -136,22 +140,8 @@ module.exports = class YoutubePlayer extends BasePlayer
     {
         let state = this._state.get(guild.id);
         let connection = guild.voiceConnection;
-        
         if (state && connection && (connection.dispatcher || connection.speaking === true)) {
-            state.stop = false;
-            var queue = this._queue.get(guild.id);
-            if(queue.queue_end_reached) {
-                
-                state.stop= true;
-            
-            }
-            this._state.set(guild.id, state);
             connection.dispatcher.end('skip() method initiated');
-            
-            
-            
-            //return this.play(guild);
-            
             return this.emit('skip', 'Music player is skipping.', guild)
         } else this.emit('skip', 'Music Player could not skip track at the moment. Player not connected or is not playing anything yet.', guild)
     }
@@ -251,8 +241,7 @@ module.exports = class YoutubePlayer extends BasePlayer
                 channel = message.channel;
                 message.delete();
             } if (stopped === false && message && channel) {
-                var emsg = this.getInfo(guild)
-                this.messages.set(guild.id, await channel.send({embed: emsg}));
+                this.messages.set(guild.id, await channel.send('', {embed: this.getInfo(guild)}));
             } else if (stopped === true) {
                 this.messages.delete(guild.id);
             }
