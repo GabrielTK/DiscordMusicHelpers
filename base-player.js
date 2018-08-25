@@ -156,7 +156,7 @@ module.exports = class BasePlayer extends EventEmitter
             seek: 0,
             volume: 1,
             increment_queue: true,
-            loop: true,
+            loop: false,
             shuffle: true,
             stop: false,
         };
