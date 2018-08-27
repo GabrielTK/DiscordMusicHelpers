@@ -1,14 +1,14 @@
 {
-  "name": "discord-helpers",
+  "name": "discord-music-helpers",
   "version": "1.0.0",
-  "description": "Common helper classes for discord bots, including various api integrations and wrappers",
+  "description": "A fork of mindaugaskasp/discord-helpers, but it uses streams (instead of caching in disk). Very WIP and Buggy.",
   "main": "\"exit 0;\"",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified... Yet.\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mindaugaskasp/discord-helpers.git"
+    "url": "git+https://github.com/GabrielTK/DiscordMusicHelpers.git"
   },
   "keywords": [
     "wrappers",
@@ -18,14 +18,17 @@
     "listen-moe",
     "radio-player"
   ],
-  "author": "Mindaugas Kasparavičius",
+  "author": "GabrielTK",
+  "maintainers": [
+    "Mindaugas Kasparavičius (original dev.)"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mindaugaskasp/discord-helpers/issues"
+    "url": "https://github.com/GabrielTK/DiscordMusicHelpers/issues"
   },
   "dependencies": {
     "promised-io": "^0.3.5",
     "superagent": "^3.5.2"
   },
-  "homepage": "https://github.com/mindaugaskasp/discord-helpers#readme"
+  "homepage": "https://github.com/GabrielTK/DiscordMusicHelpers.git#readme"
 }
