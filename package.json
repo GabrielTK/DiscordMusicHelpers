@@ -11,12 +11,13 @@
     "url": "git+https://github.com/GabrielTK/DiscordMusicHelpers.git"
   },
   "keywords": [
-    "wrappers",
-    "integrations",
+    "discord",
+    "music",
     "youtube",
     "api",
     "listen-moe",
-    "radio-player"
+    "radio-player",
+    "bot"
   ],
   "author": "GabrielTK",
   "maintainers": [
